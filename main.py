@@ -1,9 +1,7 @@
 import requests
 import os
-import calendar
 import datetime
 from datetime import date,datetime
-import urllib.request 
 
 #menesi = ["jan", "feb", "mar", "apr", "mai", "sep", "okt", "nov", "dec"]
 
@@ -53,7 +51,7 @@ def main():
         menesis = "mai"
         nulmonth = "05"
 
-
+    izmD = "Izm_" + day + "_" + month + "_" + syear + ".pdf"
     izmf = menesis + "/Izm_" + day + "_" + month + "_" + syear + ".pdf"
     todaylink = "https://4vsk.jelgava.lv/images/" + year + "_2024/izmainas/" + izmf
 
@@ -61,7 +59,38 @@ def main():
     print(month + " | " + menesis)
     print(day)
     print(todaylink)
+    print(izmD)
 
-    #requests.get(url="https://4vsk.jelgava.lv/images/2023_2024/izmainas/nov/Izm_01_11_23.pdf")
+
+
+
+    #try:
+    #    responsecheck = requests.get(url + (menesis + "/Izm_" + day + "_" + month + "_" + syear + "_5.pdf"))
+    #except:
+    #    print("5. revīzija neeksistē.")
+    #    foundRev = False
+   # 
+   # if foundRev == True:
+   #     print("Revīzija atrasta. ")
+   # else:
+   #     try:
+   #         responsecheck = requests.get(url + (menesis + "/Izm_" + day + "_" + month + "_" + syear + "_4.pdf"))
+   #     except:
+   #         print("4. revīzija neeksistē.")
+   #         foundRev = False
+   #     if foundRev == True:
+   #         print("Revīzija atrasta. ")
+   #     else:
+   #         try:
+   #             responsecheck = requests.get(url + (menesis + "/Izm_" + day + "_" + month + "_" + syear + "_3.pdf"))
+   #         except:
+   #             print("3. revīzija neeksistē.")
+   #             foundRev = False
+
+    url = "https://4vsk.jelgava.lv/images/" + year + "_2024/izmainas/" + menesis + "/Izm_" + day + "_" + month + "_" + syear + "_4.pdf"
+    response = requests.get(url)
+    file = open("faili/" + izmD, "wb")
+    file.write(response.content)
+    file.close()
 
 main()
