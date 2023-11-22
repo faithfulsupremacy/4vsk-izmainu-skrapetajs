@@ -2,6 +2,8 @@ import requests
 import os
 import datetime
 from datetime import date,datetime
+import time
+import subprocess as sub
 
 #menesi = ["jan", "feb", "mar", "apr", "mai", "sep", "okt", "nov", "dec"]
 
@@ -59,7 +61,7 @@ def main():
     print(month + " | " + menesis)
     print(day)
     print(todaylink)
-    print(izmD)
+    print(izmD + "\n\n\n")
 
 
 
@@ -87,10 +89,33 @@ def main():
    #             print("3. revīzija neeksistē.")
    #             foundRev = False
 
-    url = "https://4vsk.jelgava.lv/images/" + year + "_2024/izmainas/" + menesis + "/Izm_" + day + "_" + month + "_" + syear + "_4.pdf"
-    response = requests.get(url)
-    file = open("faili/" + izmD, "wb")
-    file.write(response.content)
-    file.close()
+    #url = "https://4vsk.jelgava.lv/images/" + year + "_2024/izmainas/" + menesis + "/Izm_" + day + "_" + month + "_" + syear + "_4.pdf"
+    #url = "https://4vsk.jelgava.lv/images/2023_2024/izmainas/nov/Izm_22_11_23.pdf"
+    #response = requests.get(url)
+    #file = open("faili/" + izmD, "wb")
+    #ile.write(response.content)
+
+    responses = requests.get(url="https://4vsk.jelgava.lv/images/2023_2024/izmainas/nov/Izm_22_11_24.pdf")
+    files = open("faili/" + "htmlPDF.txt", "wb")
+    files.write(responses.content)
+
+    #with open('faili/htmlPDF.txt') as f:
+    #    first_line = f.readline()
+    #    print(first_line)
+
+    try:
+        fline=open("faili/Izm_22_11_23.txt", encoding="utf8").readline().rstrip()    
+        print(fline)
+    except:
+        print("Fails ir pareizs.")
+    else:
+        print("Fails ir nepareizs.")
+    
+    fline=open("htmlPDF.txt", encoding="utf8").readline().rstrip()    
+    print(fline)
+
+    #print("start")
+    #time.sleep(315)
 
 main()
+input("")
