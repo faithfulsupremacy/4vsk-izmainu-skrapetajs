@@ -1,28 +1,25 @@
 import requests
-import os
 import datetime
-from datetime import date,datetime
+from datetime import date,datetime,timedelta
+import os
+import pytz
 import time
-import subprocess as sub
 
 #menesi = ["jan", "feb", "mar", "apr", "mai", "sep", "okt", "nov", "dec"]
+attempt = 0
 
 def main():
-    year = str(datetime.now().year)
-    month = str(datetime.now().month)
-    day = str(datetime.now().day)
-    syear = "23"
-    
 
-    if len(month) == 1:
-        month = "0" + month
-    if len(month) == 2:
-        print("D: m2")
+    nowtime = datetime.now(pytz.timezone('Europe/Riga'))
+    if nowtime.hour < 8:
+        datevar = nowtime
+    else:
+        datevar = nowtime + timedelta(days=1)
 
-    if len(day) == 1:
-        day = "0" + day
-    if len(day) == 2:
-        print("D: d2")
+    day = str(datevar.day)
+    month = str(datevar.month)
+    year = str(datevar.year)
+    syear = datevar.strftime("%y")
 
 
     if month == "9":
@@ -53,18 +50,17 @@ def main():
         menesis = "mai"
         nulmonth = "05"
 
-    izmD = "Izm_" + day + "_" + month + "_" + syear + ".pdf"
     izmf = menesis + "/Izm_" + day + "_" + month + "_" + syear + ".pdf"
-    todaylink = "https://4vsk.jelgava.lv/images/" + year + "_2024/izmainas/" + izmf
+    todaylink = "https://4vsk.jelgava.lv/images/2023_2024/izmainas/" + izmf
+    segments = todaylink.split('/')
+    filename = segments[-1]
 
     print(year)
     print(month + " | " + menesis)
     print(day)
     print(todaylink)
-    print(izmD + "\n\n\n")
-
-
-
+    print(filename)
+    print("\n\n\n")
 
     #try:
     #    responsecheck = requests.get(url + (menesis + "/Izm_" + day + "_" + month + "_" + syear + "_5.pdf"))
@@ -95,27 +91,24 @@ def main():
     #file = open("faili/" + izmD, "wb")
     #ile.write(response.content)
 
-    responses = requests.get(url="https://4vsk.jelgava.lv/images/2023_2024/izmainas/nov/Izm_22_11_24.pdf")
-    files = open("faili/" + "htmlPDF.txt", "wb")
+    responses = requests.get(url=todaylink)
+    files = open("faili/" + filename, "wb")
     files.write(responses.content)
-
-    #with open('faili/htmlPDF.txt') as f:
-    #    first_line = f.readline()
-    #    print(first_line)
+    files.close()
 
     try:
-        fline=open("faili/Izm_22_11_23.txt", encoding="utf8").readline().rstrip()    
-        print(fline)
+        fline=open("faili/" + filename, encoding="utf8").readline().rstrip()    
     except:
         print("Fails ir pareizs.")
     else:
         print("Fails ir nepareizs.")
-    
-    fline=open("htmlPDF.txt", encoding="utf8").readline().rstrip()    
-    print(fline)
+        os.remove("faili/" + filename)
 
     #print("start")
     #time.sleep(315)
 
-main()
-input("")
+while True:
+    main()
+    attempt =+ 1
+    print(attempt)
+    time.sleep(300)
